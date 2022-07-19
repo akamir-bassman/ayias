@@ -9,20 +9,35 @@
   },
   "private": true,
   "dependencies": {
+    "@nestjs/apollo": "^10.0.17",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.2.0",
+    "@nestjs/core": "^8.0.0",
+    "@nestjs/graphql": "^10.0.18",
+    "@nestjs/mongoose": "^9.2.0",
+    "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/schedule": "^2.1.0",
     "@nrwl/next": "13.10.6",
     "core-js": "^3.6.5",
+    "mongoose": "^6.4.5",
     "next": "12.1.2",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
+    "rxjs": "^7.0.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
+    "@nestjs/schematics": "^8.0.0",
+    "@nestjs/testing": "^8.0.0",
     "@nrwl/cli": "13.10.6",
     "@nrwl/cypress": "13.10.6",
     "@nrwl/eslint-plugin-nx": "13.10.6",
     "@nrwl/jest": "13.10.6",
     "@nrwl/linter": "13.10.6",
+    "@nrwl/nest": "^14.4.3",
+    "@nrwl/node": "14.4.3",
     "@nrwl/react": "13.10.6",
     "@nrwl/web": "13.10.6",
     "@nrwl/workspace": "13.10.6",
@@ -49,6 +64,7 @@
     "prettier": "^2.5.1",
     "react-test-renderer": "18.0.0",
     "ts-jest": "27.0.5",
+    "ts-node": "~10.8.0",
     "typescript": "~4.6.2"
   }
 }

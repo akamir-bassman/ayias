@@ -1,0 +1,68 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/metaserver/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/metaserver",
+        "main": "apps/metaserver/src/main.ts",
+        "tsConfig": "apps/metaserver/tsconfig.app.json",
+        "assets": ["apps/metaserver/src/assets"],
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/metaserver/src/environments/environment.ts",
+              "with": "apps/metaserver/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "script": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "cross-env  SERVICE_ENV=script ENVIRONMENT={args.env} ts-node  -r tsconfig-paths/register ./{args.name}.ts "
+        ],
+        "cwd": "apps/backend/src",
+        "parallel": false
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "metaserver:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "metaserver:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/metaserver/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/metaserver"],
+      "options": {
+        "jestConfig": "apps/metaserver/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

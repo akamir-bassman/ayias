@@ -37,3 +37,18 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Environment
+*.env
+tokens
+**/build
+**/node_modules
+**/package-lock.json
+/data
+/secure
+schema.gql
+**/script.js
+**/script.ts
+**/contract.ts
+
+**/abi

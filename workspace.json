@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "metaclient": "apps/metaclient",
-    "metaclient-e2e": "apps/metaclient-e2e"
+    "metaclient-e2e": "apps/metaclient-e2e",
+    "metaserver": "apps/metaserver"
   }
 }
