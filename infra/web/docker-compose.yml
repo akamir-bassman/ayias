@@ -1,0 +1,14 @@
+version: "3.2"
+services:
+  metaclient:
+    image: ayias_metaclient
+    container_name: ayias-metaclient
+    network_mode: host
+    ports:
+      - 19504:19504
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=production
+    deploy:
+      mode: replicated
+      replicas: 1

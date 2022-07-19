@@ -1,0 +1,22 @@
+version: "3.2"
+services:
+  metaserver:
+    image: ayias_metaserver
+    container_name: ayias-metaserver
+    network_mode: host
+    command: node main.js --max-old-space-size=8192
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=development
+    deploy:
+      replicas: 1
+
+  metaclient: 
+    image: ayias_metaclient
+    container_name: ayias-metaclient
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=development
+    deploy:
+      replicas: 1
