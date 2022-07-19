@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "metaclient": "apps/metaclient",
+    "metaclient-e2e": "apps/metaclient-e2e"
+  }
+}
