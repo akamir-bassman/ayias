@@ -2,14 +2,8 @@ pipeline {
     agent any
     environment {
         BUILD_CONF = credentials('akamir-build-conf')
-        BACKEND_ENV_DEV = credentials('akamir-backend-env-dev')
-        BACKEND_ENV = credentials('akamir-backend-env')
-        FRONTEND_ENV_DEV = credentials('akamir-frontend-env-dev')
-        FRONTEND_ENV = credentials('akamir-frontend-env')
         METASERVER_ENV_DEV = credentials('akamir-metaserver-env-dev')
-        METASERVER_ENV = credentials('akamir-metaserver-env')
         METACLIENT_ENV_DEV = credentials('akamir-metaclient-env-dev')
-        METACLIENT_ENV = credentials('akamir-metaclient-env')
     }
     stages {
         stage("Prepare"){
@@ -20,8 +14,6 @@ pipeline {
                 sh 'ssh -v -o StrictHostKeyChecking=no ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "mkdir -p ${PROJECT_NAME}/${REPO_NAME}/node_modules && touch ${PROJECT_NAME}/${REPO_NAME}/dummy.js"'
                 sh 'ssh -v -p ${DEV_BUILD_PORT} ${DEV_BUILD_USER}@${DEV_BUILD_HOST} "cd ${PROJECT_NAME}/${REPO_NAME} && find . -maxdepth 1 ! -path . ! \\( -name node_modules -or -name package-lock.json -or -name dist \\) -print0 | xargs -0 sudo rm -r"'
                 sh 'scp -v -P ${DEV_BUILD_PORT} -rp * ${DEV_BUILD_USER}@${DEV_BUILD_HOST}:~/${PROJECT_NAME}/${REPO_NAME}/'
-                sh 'scp -v -P ${DEV_BUILD_PORT} ${BACKEND_ENV_DEV} ${DEV_BUILD_USER}@${DEV_BUILD_HOST}:~/${PROJECT_NAME}/${REPO_NAME}/apps/${BACKEND_APP}/.development.env'
-                sh 'scp -v -P ${DEV_BUILD_PORT} ${FRONTEND_ENV_DEV} ${DEV_BUILD_USER}@${DEV_BUILD_HOST}:~/${PROJECT_NAME}/${REPO_NAME}/apps/${FRONTEND_APP}/.env'
                 sh 'scp -v -P ${DEV_BUILD_PORT} ${METASERVER_ENV_DEV} ${DEV_BUILD_USER}@${DEV_BUILD_HOST}:~/${PROJECT_NAME}/${REPO_NAME}/apps/${METASERVER_APP}/.development.env'
                 sh 'scp -v -P ${DEV_BUILD_PORT} ${METACLIENT_ENV_DEV} ${DEV_BUILD_USER}@${DEV_BUILD_HOST}:~/${PROJECT_NAME}/${REPO_NAME}/apps/${METACLIENT_APP}/.env'
             }        
@@ -30,8 +22,6 @@ pipeline {
             steps{
                 sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "cd ${PROJECT_NAME}/${REPO_NAME} && npm i  --legacy-peer-deps"'
                 sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "cd ${PROJECT_NAME}/${REPO_NAME} && sudo nx affected:build --all --parallel=5"'
-                sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "cd ${PROJECT_NAME}/${REPO_NAME} && sudo cp apps/${BACKEND_APP}/.development.env dist/apps/${BACKEND_APP}/.development.env"'
-                sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "cd ${PROJECT_NAME}/${REPO_NAME} && sudo cp apps/${FRONTEND_APP}/.env dist/apps/${FRONTEND_APP}/.env"'
                 sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "cd ${PROJECT_NAME}/${REPO_NAME} && sudo cp apps/${METASERVER_APP}/.development.env dist/apps/${METASERVER_APP}/.development.env"'
                 sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "cd ${PROJECT_NAME}/${REPO_NAME} && sudo cp apps/${METACLIENT_APP}/.env dist/apps/${METACLIENT_APP}/.env"'
                 sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "cd ${PROJECT_NAME}/${REPO_NAME} && sudo docker system prune -a -f && sudo docker-compose -f infra/akamir/docker-compose.yml build --parallel"'
@@ -41,20 +31,6 @@ pipeline {
         // }
         stage("Distribute"){
             parallel{
-                stage("Distribute Frontend"){
-                    steps{   
-                        sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "docker save ${REPO_NAME}_${FRONTEND_APP} > ~/${PROJECT_NAME}/${FRONTEND_APP}.tar"' 
-                        sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "scp -v -o StrictHostKeyChecking=no -P ${TEST_PORT} ~/${PROJECT_NAME}/${FRONTEND_APP}.tar ${TEST_USER}@${TEST_HOST}:~/${FRONTEND_APP}.tar"'
-                        sh 'ssh -v -o StrictHostKeyChecking=no ${TEST_USER}@${TEST_HOST} -p ${TEST_PORT} "docker load < ${FRONTEND_APP}.tar"'
-                    }
-                }
-                stage("Distribute Backend"){
-                    steps{    
-                        sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "docker save ${REPO_NAME}_${BACKEND_APP} > ~/${PROJECT_NAME}/${BACKEND_APP}.tar"' 
-                        sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "scp -v -o StrictHostKeyChecking=no -P ${TEST_PORT} ~/${PROJECT_NAME}/${BACKEND_APP}.tar ${TEST_USER}@${TEST_HOST}:~/${BACKEND_APP}.tar"'
-                        sh 'ssh -v -o StrictHostKeyChecking=no ${TEST_USER}@${TEST_HOST} -p ${TEST_PORT} "docker load < ${BACKEND_APP}.tar"'
-                    }
-                }
                 stage("Distribute MetaServer"){
                     steps{
                         sh 'ssh -v ${DEV_BUILD_USER}@${DEV_BUILD_HOST} -p ${DEV_BUILD_PORT} "docker save ${REPO_NAME}_${METASERVER_APP} > ~/${PROJECT_NAME}/${METASERVER_APP}.tar"' 
