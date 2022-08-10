@@ -87,7 +87,7 @@ pipeline {
         }
         stage("Cleanup"){
             steps {
-                sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH && sudo npm run docker:clean --url=$REG_URL/$REPO_NAME --branch=$BRANCH\""
+                sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH && sudo npm run docker:clean\""
             }
         }
     }

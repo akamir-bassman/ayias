@@ -1,5 +1,5 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "apps/metaserver",
   "sourceRoot": "apps/metaserver/src",
   "projectType": "application",
   "targets": {
@@ -10,20 +10,13 @@
         "outputPath": "dist/apps/metaserver",
         "main": "apps/metaserver/src/main.ts",
         "tsConfig": "apps/metaserver/tsconfig.app.json",
-        "assets": ["apps/metaserver/src/assets"],
         "generatePackageJson": true
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/metaserver/src/environments/environment.ts",
-              "with": "apps/metaserver/src/environments/environment.prod.ts"
-            }
-          ]
+          "inspect": false
         }
       }
     },

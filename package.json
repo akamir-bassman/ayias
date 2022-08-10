@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
+    "docker:clean": "docker system prune --filter=\"until=90m\" -f",
     "test": "nx test"
   },
   "private": true,
@@ -20,7 +21,10 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/schedule": "^2.1.0",
     "@nrwl/next": "13.10.6",
+    "apollo-server-core": "^3.10.1",
+    "apollo-server-express": "^3.10.1",
     "core-js": "^3.6.5",
+    "graphql": "^16.5.0",
     "mongoose": "^6.4.5",
     "next": "12.1.2",
     "react": "18.0.0",
