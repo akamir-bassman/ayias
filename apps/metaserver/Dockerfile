@@ -1,19 +1,13 @@
-#어떤 이미지로부터 새로운 이미지를 생성할지를 지정
-FROM node:16
-
-#Dockerfile 을 생성/관리하는 사람
+FROM node:16-alpine
 RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-# /app 디렉토리 생성
-RUN mkdir -p /backend
-# /app 디렉토리를 WORKDIR 로 설정
-WORKDIR /backend
-# 현재 Dockerfile 있는 경로의 모든 파일을 /app 에 복사
-ADD . /backend
-
-RUN npm i --production --legacy-peer-deps
-
-#가상 머신에 오픈할 포트
-# EXPOSE 8080 8080
-
-#컨테이너에서 실행될 명령을 지정
+RUN mkdir -p /workspace
+WORKDIR /workspace
+RUN npm i --omit=dev --legacy-peer-deps dotenv class-transformer class-validator reflect-metadata rxjs \
+    mongoose aws-sdk axios dataloader lodash uuidv4 ioredis redis socket.io subscriptions-transport-ws discord.js sharp @socket.io/redis-adapter \
+    graphql graphql-upload graphql-type-json graphql-tag graphql-redis-subscriptions graphql-subscriptions apollo-server-core apollo-server-express \
+    @nestjs/common @nestjs/config @nestjs/schedule @nestjs/core @nestjs/platform-express @nestjs/websockets @nestjs/platform-socket.io @nestjs/mongoose @nestjs/graphql
+COPY ./package.json ./package.json
+RUN npm i --omit=dev --legacy-peer-deps
+COPY . .
 CMD ["node", "main.js", "--max-old-space-size=8192"]
+# CMD ["sleep", "36000"]

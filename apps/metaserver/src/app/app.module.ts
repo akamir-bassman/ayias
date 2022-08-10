@@ -15,8 +15,8 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
         process.env.SERVICE_ENV === "script"
           ? `../.${process.env.ENVIRONMENT ?? ""}.env`
           : process.env.SERVICE_ENV === "serve"
-          ? `apps/backend/.${process.env.ENVIRONMENT ?? ""}.env`
-          : `${__dirname}/.${process.env.ENVIRONMENT ?? ""}.env`,
+          ? `apps/metaserver/.${process.env.ENVIRONMENT ?? ""}.env`
+          : `${__dirname}/.env`,
     }),
   ],
   controllers: [],

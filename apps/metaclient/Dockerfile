@@ -1,19 +1,15 @@
-
-FROM node:16
+FROM node:16.16.0
 RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-
-RUN mkdir -p /frontend
-WORKDIR /frontend
-
-# ADD . /app
-COPY .next ./.next
-COPY public ./public
-COPY package.json ./package.json
-COPY next.config.js ./next.config.js
-COPY .env ./.env
+RUN mkdir -p /workspace
+WORKDIR /workspace
 ENV PORT 19504
-RUN npm i --production --legacy-peer-deps
-RUN npm i --save @nrwl/next --legacy-peer-deps
 RUN npm i -g next
-# CMD next start -p $PORT
+RUN npm i --omit=dev --legacy-peer-deps dotenv class-transformer class-validator reflect-metadata rxjs \
+    graphql graphql-tag apollo-upload-client moment-timezone react-toastify \
+    next path postcss react react-dom react-i18next tailwindcss zustand
+RUN npm i --legacy-peer-deps caver-js@1.4.1
+COPY ./package.json ./package.json
+RUN npm i --legacy-peer-deps
+COPY . .
 CMD npm start
+# CMD ["sleep", "36000"]

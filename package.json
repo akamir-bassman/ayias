@@ -9,6 +9,8 @@
   },
   "private": true,
   "dependencies": {
+    "@decentverse/client": "^0.0.1",
+    "@decentverse/server": "^0.0.1",
     "@nestjs/apollo": "^10.0.17",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.2.0",
