@@ -53,18 +53,20 @@ pipeline {
             }
         }
         stage("Distribute"){
-            stage("Distribute Metaserver"){
-                steps{    
-                    sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -o StrictHostKeyChecking=no -P $METASERVER_PORT ~/$METASERVER_APP-${BRANCH}.tar $METASERVER_USER@$METASERVER_HOST:~/$METASERVER_APP-${BRANCH}.tar\""
-                    sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -P $METASERVER_PORT ~/$REPO_NAME/$BRANCH/infra/main/docker-compose.yml $METASERVER_USER@$METASERVER_HOST:~/$REPO_NAME/docker-compose.yml\""
-                    sh "ssh -v -o StrictHostKeyChecking=no $METASERVER_USER@$METASERVER_HOST -p $METASERVER_PORT \"docker load < $METASERVER_APP-${BRANCH}.tar\""
+            parallel{
+                stage("Distribute Metaserver"){
+                    steps{    
+                        sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -o StrictHostKeyChecking=no -P $METASERVER_PORT ~/$METASERVER_APP-${BRANCH}.tar $METASERVER_USER@$METASERVER_HOST:~/$METASERVER_APP-${BRANCH}.tar\""
+                        sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -P $METASERVER_PORT ~/$REPO_NAME/$BRANCH/infra/main/docker-compose.yml $METASERVER_USER@$METASERVER_HOST:~/$REPO_NAME/docker-compose.yml\""
+                        sh "ssh -v -o StrictHostKeyChecking=no $METASERVER_USER@$METASERVER_HOST -p $METASERVER_PORT \"docker load < $METASERVER_APP-${BRANCH}.tar\""
+                    }
                 }
-            }
-            stage("Distribute Metaclient"){
-                steps{    
-                    sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -o StrictHostKeyChecking=no -P $METACLIENT_PORT ~/$METACLIENT_APP-${BRANCH}.tar $METACLIENT_USER@$METACLIENT_HOST:~/$METACLIENT_APP-${BRANCH}.tar\""
-                    sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -P $METACLIENT_PORT ~/$REPO_NAME/$BRANCH/infra/web/docker-compose.yml $METACLIENT_USER@$METACLIENT_HOST:~/$REPO_NAME/docker-compose.yml\""
-                    sh "ssh -v -o StrictHostKeyChecking=no $METACLIENT_USER@$METACLIENT_HOST -p $METACLIENT_PORT \"docker load < $METACLIENT_APP-${BRANCH}.tar\""
+                stage("Distribute Metaclient"){
+                    steps{    
+                        sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -o StrictHostKeyChecking=no -P $METACLIENT_PORT ~/$METACLIENT_APP-${BRANCH}.tar $METACLIENT_USER@$METACLIENT_HOST:~/$METACLIENT_APP-${BRANCH}.tar\""
+                        sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"scp -v -P $METACLIENT_PORT ~/$REPO_NAME/$BRANCH/infra/web/docker-compose.yml $METACLIENT_USER@$METACLIENT_HOST:~/$REPO_NAME/docker-compose.yml\""
+                        sh "ssh -v -o StrictHostKeyChecking=no $METACLIENT_USER@$METACLIENT_HOST -p $METACLIENT_PORT \"docker load < $METACLIENT_APP-${BRANCH}.tar\""
+                    }
                 }
             }
         }
