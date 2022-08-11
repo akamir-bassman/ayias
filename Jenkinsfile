@@ -49,6 +49,7 @@ pipeline {
                             sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"docker save ${REPO_NAME}-$app-$BRANCH > ~/$app-${BRANCH}.tar\""
                         }
                     }
+                    parallel dockerizes
                 }
             }
         }
