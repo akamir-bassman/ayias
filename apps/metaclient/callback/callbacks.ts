@@ -2,10 +2,11 @@
 import Reactverse, { types, ReactverseProps } from "@decentverse/client";
 import { Socket as Soc } from "socket.io-client";
 const Caver = require("caver-js");
+export const Utils = {
+  shuffle: <T>(arr: T[]): T[] => arr.sort((a, b) => 0.5 - Math.random()),
+};
 import { ethers } from "ethers";
 import * as abi from "./abi";
-export const shuffle = <T>(arr: T[]): T[] =>
-  arr.sort((a, b) => 0.5 - Math.random());
 export const donation: types.ItemCallback = async (
   store: types.AllStore,
   socket: Soc,
@@ -162,8 +163,8 @@ export const goldenbell: types.ItemCallback = async (
       return { id: otherPlayer.id, address: wallet.address };
     })
     .filter((cur) => cur && cur?.id !== user.id);
-  const targets = shuffle(tempTargets).slice(0, num);
-  const addresslist = targets.map((target: any) => target.address);
+  const targets = Utils.shuffle(tempTargets).slice(0, num);
+  const addresslist = targets.map((target) => target.address);
   if (chain === "klaytn") {
     const [account] = await window.klaytn.enable();
     const caver = new Caver(window.klaytn);
@@ -212,7 +213,9 @@ export const goldenbell: types.ItemCallback = async (
             from: account,
             gas: 300000,
           })
-          .then(async () => {});
+          .then(async () => {
+            console.log();
+          });
       }
     } catch (err) {
       console.log(err);
@@ -233,7 +236,7 @@ export const goldenbell: types.ItemCallback = async (
     1000
   );
   socket.emit("events", {
-    userIds: targets.map((target: any) => target.id),
+    userIds: targets.map((target) => target.id),
     type: "effect",
   });
   store.inventory.setState({
