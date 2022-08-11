@@ -4,19 +4,26 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/node:build",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/metaserver",
         "main": "apps/metaserver/src/main.ts",
         "tsConfig": "apps/metaserver/tsconfig.app.json",
+        "assets": ["apps/metaserver/src/assets"],
         "generatePackageJson": true
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/metaserver/src/environments/environment.ts",
+              "with": "apps/metaserver/src/environments/environment.prod.ts"
+            }
+          ]
         }
       }
     },
@@ -26,19 +33,14 @@
         "commands": [
           "cross-env  SERVICE_ENV=script ENVIRONMENT={args.env} ts-node  -r tsconfig-paths/register ./{args.name}.ts "
         ],
-        "cwd": "apps/backend/src",
+        "cwd": "apps/metaserver/src",
         "parallel": false
       }
     },
     "serve": {
-      "executor": "@nrwl/node:node",
+      "executor": "@nrwl/node:execute",
       "options": {
         "buildTarget": "metaserver:build"
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "metaserver:build:production"
-        }
       }
     },
     "lint": {
@@ -52,8 +54,17 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/metaserver"],
       "options": {
-        "jestConfig": "apps/metaserver/jest.config.ts",
+        "jestConfig": "apps/metaserver/jest.config.js",
         "passWithNoTests": true
+      }
+    },
+    "dockerize": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "docker build -f ./apps/metaserver/Dockerfile . -t ayias/metaserver:{args.branch}-{args.tag}"
+        ],
+        "parallel": false
       }
     }
   },

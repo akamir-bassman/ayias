@@ -13,7 +13,7 @@ services:
     deploy:
       replicas: 1
 
-  metaclient: 
+  metaclient:
     container_name: ayias-metaclient
     build:
       context: ../../dist/apps/metaclient

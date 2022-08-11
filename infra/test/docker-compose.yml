@@ -11,7 +11,7 @@ services:
     deploy:
       replicas: 1
 
-  metaclient: 
+  metaclient:
     image: ayias_metaclient
     container_name: ayias-metaclient
     network_mode: host

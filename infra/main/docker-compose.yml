@@ -12,4 +12,3 @@ services:
       - ENVIRONMENT=production
     deploy:
       replicas: 4
-

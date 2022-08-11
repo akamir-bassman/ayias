@@ -8,6 +8,10 @@ import { NestFactory } from "@nestjs/core";
 
 import { AppModule } from "./app/app.module";
 import { Decentverse, srv, db } from "@decentverse/server";
+import * as fs from "fs";
+import { Model } from "mongoose";
+import { getModelToken } from "@nestjs/mongoose";
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = "api";

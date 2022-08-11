@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:16
 RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 RUN mkdir -p /workspace
 WORKDIR /workspace
