@@ -75,13 +75,13 @@ pipeline {
             parallel{
                 stage("Deploy Metaserver"){
                     steps{
-                        sh "ssh -v -o StrictHostKeyChecking=no $METASERVER_USER@$METASERVER_HOST -p $METASERVER_PORT \"cd ~/$REPO_NAME && docker service update --force ${REPO_NAME}_${METACLEINT_APP} && docker system prune -a -f\""
+                        sh "ssh -v $METASERVER_USER@$METASERVER_HOST -p $METASERVER_PORT \"cd ~/$REPO_NAME && docker service update --force ${REPO_NAME}_${METACLEINT_APP} && docker system prune -a -f\""
                     }
                 }
                 stage("Deploy Metaclient"){
                     steps{
                         // sh 'ssh -v -o StrictHostKeyChecking=no ${FRONTEND_USER}@${FRONTEND_HOST} -p ${FRONTEND_PORT} "docker stack rm ${REPO_NAME} && docker stack deploy --compose-file docker-compose.yml ${REPO_NAME} && docker system prune -a -f"'                        
-                        sh "ssh -v -o StrictHostKeyChecking=no $METACLIENT_USER@$METACLIENT_HOST -p $METACLIENT_PORT \"cd ~/$REPO_NAME && docker service update --force ${REPO_NAME}_${METACLEINT_APP} && docker system prune -a -f\""
+                        sh "ssh -v $METACLIENT_USER@$METACLIENT_HOST -p $METACLIENT_PORT \"cd ~/$REPO_NAME && docker service update --force ${REPO_NAME}_${METACLEINT_APP} && docker system prune -a -f\""
                     }
                 }
             }
