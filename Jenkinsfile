@@ -45,7 +45,7 @@ pipeline {
                         dockerizes[app] = {
                             sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH && sudo find ./apps/$app -name *.env -exec cp {} ./dist/apps/$app \\;\""
                             sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH && sudo find ./apps/$app -name Dockerfile -exec cp {} ./dist/apps/$app \\;\""
-                            sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH/dist/apps/$app && sudo docker build . -t ${REPO_NAME}_$app\""
+                            sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH/dist/apps/$app && sudo docker build . -t ${REPO_NAME}-$app-$BRANCH\""
                             sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"docker save ${REPO_NAME}-$app-$BRANCH > ~/$app-${BRANCH}.tar\""
                         }
                     }
