@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   metaserver:
-    image: ayias_metaserver
+    image: ayias-metaserver-main
     container_name: ayias-metaserver
     network_mode: host
     ports:
@@ -11,5 +11,5 @@ services:
     environment:
       - ENVIRONMENT=production
     deploy:
-      replicas: 1
+      replicas: 4
 
