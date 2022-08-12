@@ -33,7 +33,7 @@ pipeline {
         }
         stage("Build"){
             steps {
-                sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH && sudo npm install --legacy-peer-deps\""
+                sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH && sudo npm install --legacy-peer-deps && sudo npm install --legacy-peer-deps @decentverse/server@latest @decentverse/client@latest\""
                 sh "ssh -v $MS_USER@$MS_HOST -p $MS_PORT \"cd $REPO_NAME/$BRANCH && sudo nx affected:build --all --parallel=1\""
             }
         }
