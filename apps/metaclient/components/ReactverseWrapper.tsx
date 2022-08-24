@@ -7,9 +7,9 @@ const ReactVerseWrapper = () => {
     kaikas: {
       address: "0xe47e90c58f8336a2f24bcd9bcb530e2e02e1e8ae",
     },
-    metamask: {
-      address: "0x37572d0c069221ed7e8406b34cbd332983353ab6",
-    },
+    // metamask: {
+    //   address: "0x37572d0c069221ed7e8406b34cbd332983353ab6",
+    // },
     login: {
       logoImage: "./logo.svg",
       backgroundImage: "./back.png",
@@ -29,14 +29,6 @@ const ReactVerseWrapper = () => {
   ];
   const eventCallback = callback.eventCallback;
 
-  return (
-    <Reactverse
-      uri={uri}
-      ws={ws}
-      config={config}
-      itemCallbacks={callbacks}
-      eventCallback={eventCallback}
-    />
-  );
+  return <Reactverse uri={uri} ws={ws} config={config} itemCallbacks={callbacks} eventCallback={eventCallback} />;
 };
 export default ReactVerseWrapper;
