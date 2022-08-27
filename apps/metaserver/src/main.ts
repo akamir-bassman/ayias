@@ -18,13 +18,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   // const port = process.env.PORT || 8080;
   await app.init();
-  console.log({
-    address: process.env.ETHER_WALLET_ADDR,
-    privateKey: process.env.ETHER_WALLET_PRIVATE_KEY,
-    infuraId: process.env.INFURA_PROJECT_ID,
-    etherscanApiKey: process.env.ETHERSCAN_API_KEY,
-    network: "mainnet",
-  });
+
   const decentverse = new Decentverse({
     objectStorage: {
       region: "ap-northeast-2",

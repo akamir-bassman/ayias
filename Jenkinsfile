@@ -3,7 +3,7 @@ pipeline {
     environment {
         BRANCH = "$env.BRANCH_NAME"
         BUILD_CONF = credentials("jenkins-conf")
-        APPS = "metaserver,metaclient"
+        APPS = "metaclient"
     }
     stages {
         stage("Boot"){
